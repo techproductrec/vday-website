@@ -1,1 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💕</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 25%, #fff5f7 50%, #ffffff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .gif-container {
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .gif-container img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            object-fit: cover;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            color: #ff1493;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            min-height: 100px;
+        }
+        
+        button {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        #yesBtn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            font-size: 1.5rem;
+            padding: 20px 50px;
+        }
+        
+        #noBtn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            font-size: 1.5rem;
+            padding: 20px 50px;
+            position: absolute;
+        }
+        
+        /* Celebration Screen */
+        .celebration {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .celebration img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.4);
+            margin-bottom: 30px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+        
+        .celebration h1 {
+            font-size: 4rem;
+            color: #ff1493;
+            margin-bottom: 20px;
+        }
+        
+        .celebration p {
+            font-size: 1.8rem;
+            color: #ff69b4;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .celebration .message {
+            font-size: 1.3rem;
+            color: #ff6b9d;
+            font-weight: 600;
+            margin: 25px auto;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .playBtn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            font-size: 1.5rem;
+            padding: 18px 50px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            position: relative;
+            border-radius: 50px;
+        }
+        
+        .playBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Hearts background animation */
+        .heart {
+            position: fixed;
+            font-size: 30px;
+            animation: fall linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .gif-container img {
+                width: 200px;
+                height: 200px;
+            }
+            
+            #yesBtn, #noBtn {
+                font-size: 1.2rem;
+                padding: 15px 35px;
+            }
+            
+            .celebration h1 {
+                font-size: 2.5rem;
+            }
+            
+            .celebration p {
+                font-size: 1.3rem;
+            }
+            
+            .celebration .message {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .celebration img {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .playBtn {
+                font-size: 1.2rem;
+                padding: 15px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Proposal Screen -->
+    <div class="container" id="proposalScreen">
+        <div class="gif-container">
+            <!-- REPLACE THIS URL WITH YOUR OWN CUTE GIF -->
+            <!-- Suggestions: Mochi cats (Peach & Goma), cute bears, or any adorable Valentine's themed gif -->
+            <img src="https://media.tenor.com/j2W9ut75YJ8AAAAM/mochi-mochi-peach-cat.gif" alt="Cute Valentine">
+        </div>
+        
+        <h1>Will you be my Valentine? 💕</h1>
+        
+        <div class="button-container" id="buttonContainer">
+            <button id="yesBtn">Yes! 💖</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+    
+    <!-- Celebration Screen (hidden initially) -->
+    <div class="celebration" id="celebrationScreen">
+        <div class="gif-container">
+            <!-- REPLACE THIS URL WITH YOUR OWN CELEBRATION GIF -->
+            <!-- Suggestions: Hugging cats/bears, celebration animations, happy couple gifs -->
+            <img src="https://media.tenor.com/WzA0nZVl3UEAAAAM/love-bear-hug.gif" alt="Yay!">
+        </div>
+        <h1>YAY! 🎉</h1>
+        <p>Hehe, I knew it! Love you! ❤️</p>
+        
+        <p class="message">I know we couldn't spend the day together but here's something fun for you to try</p>
+        
+        <a href="https://techproductrec.github.io/vday-quordle/" class="playBtn" target="_blank">Play 🎮</a>
+    </div>
 
+    <script>
+        // Button elements
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const proposalScreen = document.getElementById('proposalScreen');
+        const celebrationScreen = document.getElementById('celebrationScreen');
+        const buttonContainer = document.getElementById('buttonContainer');
+        
+        // Click counter and state
+        let noClickCount = 0;
+        let isHardMode = false;
+        
+        // Phase 1: Pleading messages
+        const pleadingMessages = [
+            "Are you sure? 🥺",
+            "Please? 🙏",
+            "Don't do this to me 😢",
+            "I'm gonna cry... 😭",
+            "You're breaking my heart! 💔"
+        ];
+        
+        // Initial button sizes
+        let yesFontSize = 1.5;
+        let yesPadding = 20;
+        let noFontSize = 1.5;
+        let noPadding = 20;
+        
+        // NO BUTTON CLICK HANDLER
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            noClickCount++;
+            
+            if (noClickCount <= 5) {
+                // PHASE 1: Change text and resize buttons
+                if (noClickCount <= pleadingMessages.length) {
+                    noBtn.textContent = pleadingMessages[noClickCount - 1];
+                }
+                
+                // Shrink No button
+                noFontSize -= 0.15;
+                noPadding -= 3;
+                noBtn.style.fontSize = noFontSize + 'rem';
+                noBtn.style.padding = noPadding + 'px ' + (noPadding * 2) + 'px';
+                
+                // Grow Yes button
+                yesFontSize += 0.2;
+                yesPadding += 4;
+                yesBtn.style.fontSize = yesFontSize + 'rem';
+                yesBtn.style.padding = yesPadding + 'px ' + (yesPadding * 2) + 'px';
+                
+                // Activate hard mode at 5 clicks
+                if (noClickCount === 5) {
+                    noBtn.textContent = "Just say Yes! 💝";
+                    isHardMode = true;
+                }
+            }
+        });
+        
+        // PHASE 2: HARD MODE - Make button impossible to click
+        function moveNoButton() {
+            if (!isHardMode) return;
+            
+            // Get viewport dimensions
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            
+            // Generate random position
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            // Move the button
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+        
+        // Mouse movement detection for hard mode
+        noBtn.addEventListener('mouseenter', moveNoButton);
+        noBtn.addEventListener('touchstart', function(e) {
+            if (isHardMode) {
+                e.preventDefault();
+                moveNoButton();
+            }
+        });
+        
+        // YES BUTTON CLICK HANDLER
+        yesBtn.addEventListener('click', function() {
+            // Hide proposal screen
+            proposalScreen.style.display = 'none';
+            
+            // Show celebration screen
+            celebrationScreen.style.display = 'block';
+            
+            // Trigger confetti
+            triggerConfetti();
+            
+            // Create falling hearts
+            createFallingHearts();
+        });
+        
+        // CONFETTI ANIMATION
+        function triggerConfetti() {
+            const duration = 3000;
+            const end = Date.now() + duration;
+            
+            const colors = ['#ff69b4', '#ff1493', '#ff85c1', '#ffc0cb', '#ff6b9d'];
+            
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+                
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+            
+            // Big confetti burst
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: colors
+            });
+        }
+        
+        // FALLING HEARTS ANIMATION
+        function createFallingHearts() {
+            const heartEmojis = ['❤️', '💕', '💖', '💗', '💝', '💘'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
